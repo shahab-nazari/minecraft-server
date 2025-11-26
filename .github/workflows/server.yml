@@ -17,3 +17,12 @@ jobs:
 
       - name: Run server
         run: ./start.sh
+      - name: Install cloudflared
+        run: |
+          curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o cloudflared
+          chmod +x cloudflared
+      - name: Start Tunnel
+        run: |
+          ./cloudflared tunnel --url tcp://localhost:25565 > tunnel.log &
+          sleep 10
+          cat tunnel.log
