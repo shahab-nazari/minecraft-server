@@ -1,0 +1,19 @@
+name: Minecraft Server Free
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Java 17
+        run: sudo apt install -y openjdk-17-jre
+
+      - name: Allow scripts
+        run: chmod +x start.sh
+
+      - name: Run server
+        run: ./start.sh
