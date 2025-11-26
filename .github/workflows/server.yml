@@ -7,22 +7,19 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Install Java 17
-        run: sudo apt install -y openjdk-17-jre
+      - name: Install Java 17 (Oracle)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.deb
+          sudo apt-get install -y ./jdk-17_linux-x64_bin.deb
+          java -version
 
-      - name: Allow scripts
+      - name: Make script executable
         run: chmod +x start.sh
 
       - name: Run server
         run: ./start.sh
-      - name: Install cloudflared
-        run: |
-          curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o cloudflared
-          chmod +x cloudflared
-      - name: Start Tunnel
-        run: |
-          ./cloudflared tunnel --url tcp://localhost:25565 > tunnel.log &
-          sleep 10
-          cat tunnel.log
